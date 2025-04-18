@@ -1,10 +1,12 @@
 package com.example.arcare;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -29,16 +32,20 @@ import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     Button selectBtn, predictBtn, captureBtn, chatbotBtn, bookMedicineBtn;
     TextView result;
-    ImageView imageView;
+    ImageView imageView, profileIcon;
     Bitmap bitmap;
     List<String> labels = new ArrayList<>();
 
@@ -46,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 🔐 Check if user is logged in
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
 
@@ -58,9 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // ✅ Set toolbar as action bar
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         getPermission();
 
@@ -82,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
         bookMedicineBtn = findViewById(R.id.bookMedicineBtn);
         result = findViewById(R.id.result);
         imageView = findViewById(R.id.imageView);
+        profileIcon = findViewById(R.id.profileIcon);
+
+        profileIcon.setOnClickListener(v -> showUserProfileDialog());
 
         selectBtn.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -133,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         bookMedicineBtn.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, BookMedicineActivity.class)));
     }
 
-    // 🔓 Logout menu integration
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -187,6 +197,29 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == 12) {
             bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);
+            saveImageToStorage(bitmap);
+        }
+    }
+
+    private void saveImageToStorage(Bitmap bitmap) {
+        File directory = new File(getFilesDir(), "CapturedImages");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        String filename = "IMG_" + System.currentTimeMillis() + ".png";
+        File file = new File(directory, filename);
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            Set<String> paths = prefs.getStringSet("capturedImages", new HashSet<>());
+            paths.add(file.getAbsolutePath());
+            prefs.edit().putStringSet("capturedImages", paths).apply();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -196,5 +229,27 @@ public class MainActivity extends AppCompatActivity {
             if (arr[i] > arr[maxIdx]) maxIdx = i;
         }
         return maxIdx;
+    }
+
+    private void showUserProfileDialog() {
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String name = prefs.getString("userName", "Anushka");
+        String email = prefs.getString("userEmail", "anushka@example.com");
+
+        String userInfo = "Name: " + name + "\nEmail: " + email;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("User Profile");
+        builder.setMessage(userInfo);
+
+        builder.setPositiveButton("Previous Activity", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(MainActivity.this, PreviousActivity.class));
+            }
+        });
+
+        builder.setNegativeButton("Close", null);
+        builder.show();
     }
 }

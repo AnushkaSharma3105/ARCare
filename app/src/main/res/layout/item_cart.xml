@@ -9,7 +9,7 @@
     android:elevation="2dp">
 
     <TextView
-        android:id="@+id/medicineName"
+        android:id="@+id/cartMedicineName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medicine Name"
@@ -17,7 +17,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/medicinePrice"
+        android:id="@+id/cartMedicinePrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="₹0"
@@ -25,24 +25,23 @@
         android:layout_marginTop="2dp"/>
 
     <TextView
-        android:id="@+id/medicineDescription"
+        android:id="@+id/cartMedicineQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="Quantity"
         android:layout_marginTop="2dp"/>
 
-    <!-- Quantity Spinner -->
-    <Spinner
-        android:id="@+id/quantitySpinner"
+    <Button
+        android:id="@+id/removeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Remove from Cart"
         android:layout_marginTop="8dp"/>
 
-    <!-- Add to Cart Button -->
     <Button
-        android:id="@+id/addToCartButton"
-        android:layout_width="match_parent"
+        android:id="@+id/buyButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to Cart"
+        android:text="Buy Now"
         android:layout_marginTop="8dp"/>
 </LinearLayout>

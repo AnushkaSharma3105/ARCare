@@ -35,9 +35,11 @@ android {
 }
 
 dependencies {
+    implementation ("com.android.volley:volley:1.2.1")
     implementation("org.tensorflow:tensorflow-lite:2.13.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
     implementation("org.tensorflow:tensorflow-lite-metadata:0.4.3")
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)

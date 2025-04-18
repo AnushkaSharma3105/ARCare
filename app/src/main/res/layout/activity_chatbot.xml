@@ -1,43 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#0f0f0f"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="20dp">
 
-    <ScrollView
-        android:id="@+id/chatScroll"
+    <TextView
+        android:id="@+id/title"
+        android:text="🤖 ARCare Bot"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#00ffe1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_above="@+id/inputLayout"
-        android:layout_alignParentTop="true">
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/chatOutput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bot: Hi! Ask me about any allergy!"
-            android:textSize="18sp" />
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/inputLayout"
+    <EditText
+        android:id="@+id/userInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:hint="Ask me anything..."
+        android:textColorHint="#CCCCCC"
+        android:textColor="#e0e0e0"
+        android:background="@drawable/edittext_bg"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"/>
 
-        <EditText
-            android:id="@+id/userInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Ask about allergy..." />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:weightSum="3">
 
         <Button
             android:id="@+id/sendBtn"
-            android:layout_width="wrap_content"
+            android:text="Ask!"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Send" />
+            android:backgroundTint="#00ffe1"
+            android:textColor="#000"
+            android:layout_marginEnd="6dp"/>
+
+        <Button
+            android:id="@+id/micBtn"
+            android:text="🎙️"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00ffe1"
+            android:textColor="#000"
+            android:layout_marginEnd="6dp"/>
+
+        <Button
+            android:id="@+id/speakBtn"
+            android:text="🔊"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00ffe1"
+            android:textColor="#000" />
     </LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/response"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🤖 Bot will reply here..."
+        android:textColor="#e0e0e0"
+        android:textSize="17sp"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
+        android:background="#1c1c1c"
+        android:gravity="start"
+        android:elevation="4dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#1c1c1c"
+        android:layout_gravity="center" />
+</LinearLayout>

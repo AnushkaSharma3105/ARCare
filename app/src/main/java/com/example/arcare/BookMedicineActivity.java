@@ -1,6 +1,8 @@
 package com.example.arcare;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +31,18 @@ public class BookMedicineActivity extends AppCompatActivity {
         medicineList.add(new Medicine("Hydrocortisone Cream", "₹120", "Anti-itch and inflammation"));
         medicineList.add(new Medicine("Neosporin Ointment", "₹200", "Heals cuts and skin infections"));
 
-        adapter = new MedicineAdapter(medicineList, medicine -> {
-            Toast.makeText(BookMedicineActivity.this, "Booked: " + medicine.getName(), Toast.LENGTH_SHORT).show();
-        });
-
+        adapter = new MedicineAdapter(medicineList);
         recyclerView.setAdapter(adapter);
+
+        Button viewCartButton = findViewById(R.id.viewCartButton);
+        viewCartButton.setOnClickListener(v -> {
+            ArrayList<Medicine> cartItems = CartManager.getCart();
+            if (!cartItems.isEmpty()) {
+                Intent intent = new Intent(BookMedicineActivity.this, CartActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(BookMedicineActivity.this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

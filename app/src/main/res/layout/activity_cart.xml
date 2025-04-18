@@ -16,12 +16,29 @@
         android:layout_gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/cartRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="12dp"
         android:contentDescription="Medicine list, scroll to view items" />
+
+    <TextView
+        android:id="@+id/emptyCartText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your cart is empty"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buyNowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buy Now"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary" />
 
 
     <Button
