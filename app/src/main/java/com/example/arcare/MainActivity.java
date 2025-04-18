@@ -1,5 +1,6 @@
 package com.example.arcare;
 
+import android.util.Log;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -116,15 +117,22 @@ public class MainActivity extends AppCompatActivity {
                 Model model = Model.newInstance(MainActivity.this);
 
                 bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true);
+                Log.d("MyApp", "Model Output: 120 ");
                 TensorImage tensorImage = TensorImage.fromBitmap(bitmap);
+                Log.d("MyApp", "Model Output: 122");
                 TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, org.tensorflow.lite.DataType.FLOAT32);
+                Log.d("MyApp", "Model Output: 124");
                 inputFeature0.loadBuffer(tensorImage.getBuffer());
-
+                Log.d("MyApp", "Model Output: 126");
                 Model.Outputs outputs = model.process(inputFeature0);
+                Log.d("MyApp", "Model Output: 128 ");
                 TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                Log.d("MyApp", "Model Output:130 ");
 
                 float[] resultsArray = outputFeature0.getFloatArray();
+                Log.d("MyApp", "Model Output: " + resultsArray[0]);
                 int maxIdx = getMax(resultsArray);
+                System.out.println("134");
 
                 if (maxIdx < labels.size()) {
                     result.setText("Prediction: " + labels.get(maxIdx));
